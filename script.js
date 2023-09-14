@@ -1,6 +1,6 @@
 function createUserCard(user) {
     const userCard = document.createElement("div");
-    userCard.classList.add("col-md-4", "offset-md-4");
+    userCard.classList.add("col-md-");
 
     const card = document.createElement("div");
     card.classList.add("card");
@@ -8,38 +8,47 @@ function createUserCard(user) {
     const cardBody = document.createElement("div");
     cardBody.classList.add("card-body");
 
-    const userInfo = document.createElement("div");
-    userInfo.classList.add("card-text");
-    userInfo.textContent = `${user.twitterName} Ξ ${(
-        user.displayPrice / 1e18
-    ).toFixed(2)}`;
+    // Create an anchor tag for the Twitter username with the link to the user's profile
+    const usernameLink = document.createElement("a");
+    usernameLink.href = `https://twitter.com/${user.twitterUsername}`;
+    usernameLink.textContent = user.twitterName;
+    usernameLink.target = "_blank"; // Open link in a new tab
 
-    cardBody.appendChild(userInfo);
+    cardBody.appendChild(usernameLink);
+
+    // Append the user display price to userInfo
+    const displayPrice = document.createElement("div");
+    displayPrice.textContent = `Ξ ${(user.displayPrice / 1e18).toFixed(2)}`;
+    
+    cardBody.appendChild(displayPrice);
 
     card.appendChild(cardBody);
-
     userCard.appendChild(card);
 
     return userCard;
 }
 
-function fetchUserData() {
-    const userList = document.getElementById("user-list");
+async function fetchUserData(endpoint, userListId) {
+    try {
+        const userList = document.getElementById(userListId);
+        const response = await fetch(`https://prod-api.kosetto.com/lists/${endpoint}`);
+        const data = await response.json();
+        
+        userList.innerHTML = "";
 
-    fetch("https://prod-api.kosetto.com/lists/top-by-price")
-        .then((response) => response.json())
-        .then((data) => {
-            userList.innerHTML = "";
-
-            data.users.forEach((user) => {
-                const userCard = createUserCard(user);
-                userList.appendChild(userCard);
-            });
-        })
-        .catch((error) => {
-            console.error("Error fetching data:", error);
+        data.users.forEach((user) => {
+            const userCard = createUserCard(user);
+            userList.appendChild(userCard);
         });
+    } catch (error) {
+        console.error(`Error fetching data from ${endpoint}:`, error);
+    }
 }
 
-fetchUserData();
-setInterval(fetchUserData, 5000);
+async function fetchAllUserData() {
+    await fetchUserData("top-by-price", "top-by-price-list");
+    await fetchUserData("trending", "trending-list");
+}
+
+fetchAllUserData();
+setInterval(fetchAllUserData, 5000);
