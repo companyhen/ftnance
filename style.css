@@ -73,3 +73,12 @@ body {
 .logo {
     max-width:100%;
 }
+.twitter {
+    margin: 0 auto;
+}
+.twitter a {
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    text-transform: lowercase;
+    color: #999;
+}
