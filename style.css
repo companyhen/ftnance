@@ -65,9 +65,17 @@ body {
     width: calc(33.33% - 10px);
 }
 
-.card-text {
+.card-text, .card-body {
     font-size: 1.5rem;
+}
 
+.card-body a {
+    color: #00b3d6;
+    padding-right: 0.5rem;
+}
+
+.card-body a, .card-body div {
+    display: inline-block;
 }
 
 .logo {
@@ -82,4 +90,15 @@ body {
     letter-spacing: 1px;
     text-transform: lowercase;
     color: #999;
+}
+
+h2 {
+    font-weight: 700!important;
+    font-size: 0.8rem!important;
+    color: #fff;
+    background: #00b3d6;
+    display: inline-block;
+    border-radius: 5px;
+    padding: 0.5rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,.3)!important;
 }
