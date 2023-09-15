@@ -14,6 +14,7 @@ body {
     border-radius: 5px;
 }
 
+
 .user-card {
     display: flex;
     align-items: center;
@@ -65,7 +66,8 @@ body {
 }
 
 .card-text, .card-body {
-    font-size: 0.85rem;
+    font-size: 1.5rem;
+    font-weight: 400;
 }
 
 .card-body a {
