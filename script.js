@@ -36,10 +36,23 @@ async function fetchUserData(endpoint, userListId) {
         
         userList.innerHTML = "";
 
-        data.users.forEach((user) => {
+        // Ensure that there are at least 50 users in the list
+        const usersToAdd = data.users.slice(0, 50);
+
+        usersToAdd.forEach((user) => {
             const userCard = createUserCard(user);
             userList.appendChild(userCard);
         });
+
+        // Handle the case where there are fewer than 50 users
+        if (usersToAdd.length < 50) {
+            const remainingUsers = 50 - usersToAdd.length;
+            for (let i = 0; i < remainingUsers; i++) {
+                // Create empty user cards to fill the gap
+                const emptyUserCard = createUserCard({ twitterName: "", displayPrice: 0 });
+                userList.appendChild(emptyUserCard);
+            }
+        }
     } catch (error) {
         console.error(`Error fetching data from ${endpoint}:`, error);
     }
